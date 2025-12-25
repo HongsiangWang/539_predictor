@@ -10,7 +10,8 @@ def convert_version(version: str) -> str:
 
     Supported versions: 'add', 'add+', 'diff', 'diff+'
     """
-    mapping = {"add": "+", "diff": "-", "add+": "++", "diff+": "--"}
+    mapping = {"add": ["-", "+"], "diff": ["+", "-"],
+               "add+": ["+", "+"], "diff+": ["-", "-"]}
     if version not in mapping:
         raise ValueError(
             "version must be one of: 'add', 'add+', 'diff', 'diff+'")
