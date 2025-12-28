@@ -10,6 +10,6 @@ call conda activate 539
 cd /d D:\workspace\539
 
 REM update data and wait for completion
-python update_fantacy5_data.py
+python update_fantasy5_data.py
 
 exit
