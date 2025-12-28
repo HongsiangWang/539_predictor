@@ -11,6 +11,5 @@ cd /d D:\workspace\539
 
 REM update data and wait for completion
 python update_539_data.py
-python update_fantacy5_data.py
 
 exit
