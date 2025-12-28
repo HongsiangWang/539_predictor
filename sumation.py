@@ -2,7 +2,7 @@ import numpy as np
 from typing import Optional, Dict, Any
 
 from parameters import COMBINATION
-from utils import load_data
+from utils import load_539_data
 
 
 def convert_version(version: str) -> str:
@@ -65,7 +65,7 @@ def main_scripts(interval: int = 3,
     """
     # lazy-load data / combinations if caller didn't provide them
     if data is None:
-        data = load_data()
+        data = load_539_data()
     total_num = data.shape[0]
     if combination_arr is None:
         combination_arr = np.array(COMBINATION)
@@ -107,4 +107,5 @@ def main_scripts(interval: int = 3,
 
 if __name__ == "__main__":
     # quick sanity: print dataset size
-    print(f"Loaded DATA with {TOTAL_NUM} rows")
+    DATA = load_539_data()
+    print("Loaded data shape:", DATA.shape)

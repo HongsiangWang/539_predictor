@@ -2,7 +2,7 @@ from collections import Counter
 import numpy as np
 import pandas as pd
 import argparse
-from utils import load_data
+from utils import load_539_data
 import matplotlib.pyplot as plt
 import os
 # --- Load Data ---
@@ -59,7 +59,7 @@ def main(argv=None):
                         help="period (lookback) to use for locator")
     args = parser.parse_args(argv)
 
-    DATA = load_data()
+    DATA = load_539_data()
     locator, results = get_drag_results(DATA, period=args.period)
     print("Locator (period={}): {}".format(args.period, locator))
     for r in results:

@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <title>今彩539 預測器</title>
+  <title>{{ game }} 預測器</title>
 
   <!-- DataTables CSS & JS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -10,13 +10,20 @@
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
+  <div style="margin-bottom:0.5rem;">
+		{% if game == '539' %}
+		<strong>539</strong> | <a href="/set_game/fantasy5">天天樂</a>
+		{% else %}
+		<a href="/set_game/539">539</a> | <strong>天天樂</strong>
+		{% endif %}
+  </div>
   <nav style="margin-bottom:0.5rem;">
-		<a href="/">主頁</a> |
+		<a href="/">開獎號碼</a> |
 		<a href="/drag">拖牌</a>|
 		<a href="/sumation">和數</a>
   </nav>
 
-  <h2 style="margin-top:0.5rem;">歷史各期號碼</h2>
+  <h2 style="margin-top:0.5rem;">{{ game }} 歷史各期號碼</h2>
   <table id="dataTable" border="1" cellpadding="10" cellspacing="0" title="歷史各期號碼">
     <thead>
       <tr>

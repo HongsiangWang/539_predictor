@@ -1,11 +1,8 @@
 import requests
 import pandas as pd
 import datetime
-import numpy as np
-import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
-from collections import defaultdict, Counter
-from itertools import combinations
+
 
 df = pd.DataFrame(columns=["date", "num1", "num2", "num3", "num4", "num5"])
 # 開始從第一頁爬到第48頁
@@ -30,4 +27,4 @@ for i in range(1, 58):
             df = pd.concat([df, dftmp], ignore_index=True)
 # 將日期設為我們的index
 df.set_index('date', inplace=True)
-df.to_csv('lotteryHistory.csv', index=True)
+df.to_csv('data/539_history.csv', index=True)
