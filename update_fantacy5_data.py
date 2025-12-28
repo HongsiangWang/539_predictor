@@ -18,29 +18,45 @@ def scrape_fantasy5_history(start_year, end_year):
             response = requests.get(url, headers=headers)
             if response.status_code != 200:
                 print(
-                    f" fail to fetch {year} (error: {response.status_code}),skip")
+                    f" fail to fetch {year} (error: {response.status_code}), skip")
                 continue
 
             soup = BeautifulSoup(response.text, 'html.parser')
             year_count = 0
 
-            date_links = soup.find_all('a', href=True)
-            for link in date_links:
-                if f'/california/fantasy-5/numbers/' in link['href'] and 'prize payout' in link.get('title', ''):
+            # Find all table rows (tr)
+            rows = soup.find_all('tr')
 
-                    date_text = link.get_text(separator=" ", strip=True)
+            for row in rows:
+                # --- 1. Extract date ---
+                # Look for <td>, as date is always in td
+                td_cell = row.find('td')
+                if not td_cell:
+                    continue
 
-                    parent_row = link.find_parent('tr')
-                    if parent_row:
-                        ball_tags = parent_row.find_all('li', class_='ball')
-                        nums = [b.get_text(strip=True) for b in ball_tags]
+                # Try to get date from <a>, if no <a>, get directly from <td> text
+                date_link = td_cell.find('a')
+                if date_link:
+                    date_text = date_link.get_text(separator=" ", strip=True)
+                else:
+                    date_text = td_cell.get_text(separator=" ", strip=True)
 
-                        if len(nums) >= 5:
-                            all_results.append([date_text] + nums[:5])
-                            year_count += 1
+                # Filter out non-date headers (e.g., table title "Date")
+                if "Date" in date_text or not date_text:
+                    continue
 
-            print(f"{year} fetch sucessful,totally {year_count} numbers。")
-            # 稍微停頓，避免被網站阻擋
+                # --- 2. Extract numbers ---
+                # Find all <li> with class="ball"
+                ball_tags = row.find_all('li', class_='ball')
+                nums = [b.get_text(strip=True) for b in ball_tags]
+
+                # Ensure we have at least 5 numbers
+                if len(nums) >= 5:
+                    all_results.append([date_text] + nums[:5])
+                    year_count += 1
+
+            print(f"{year} fetch successful, totally {year_count} numbers.")
+            # Slight pause to avoid being blocked by the site
             time.sleep(1.5)
 
         except Exception as e:
@@ -51,11 +67,12 @@ def scrape_fantasy5_history(start_year, end_year):
                           "date", "num1", "num2", "num3", "num4", "num5"])
         df = df.drop_duplicates()
 
-        filename = f'data/fantasy5_history.csv'
+        filename = 'data/fantasy5_history.csv'
         df.to_csv(filename, index=False, encoding='utf-8-sig')
+        print(f"Total fetched: {len(df)} records and saved.")
 
     else:
-        print("fail to fetch any data。")
+        print("Failed to fetch any data.")
 
 
 if __name__ == "__main__":
